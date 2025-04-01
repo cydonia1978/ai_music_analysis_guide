@@ -82,19 +82,21 @@
     </ol>
 
     <h3>③ Create a Folder for Music Files</h3>
-    <p>Create a folder on your Windows system where you'll place the songs to analyze:</p>
+    <p>Create a folder on your Windows system where you'll place the songs to analyze, for example:</p>
     <pre><code>M:\Essentia\tracks</code></pre>
     <p>Put your .mp3 or .wav files in there.</p>
 
     <h3>④ Open Command Prompt (CMD)</h3>
     <ol>
-      <li>Press <strong>Windows Key</strong> and type <code>cmd</code>, then press Enter</li>
+      <li>Press <strong>Windows Key</strong> and type <code>cmd</code> then press Enter</li>
       <li>In the command prompt, pull the Essentia Docker image:</li>
     </ol>
     <pre><code>docker pull ghcr.io/mtg/essentia:latest</code></pre>
 
     <h3>⑤ Create a Batch File to Automate Analysis</h3>
-    <p>Make your workflow easier with a reusable .bat file:</p>
+    <p>Make your workflow easier with a reusable .bat file.</p>
+    <ol>
+    <li>In Notepad, paste the following:
     <pre><code>@echo off
 echo.
 echo Enter the filename of the track (e.g., MySong.mp3):
@@ -104,8 +106,7 @@ docker run --rm -v M:/Essentia/tracks:/music ghcr.io/mtg/essentia:latest bash -c
 
 echo.
 echo Analysis complete! Check the JSON file in your tracks folder.
-pause</code></pre>
-    <ol>
+pause</code></pre></li>
       <li>Save it as <code>analyze_song.bat</code></li>
       <li>Double-click to run any time</li>
     </ol>
@@ -113,7 +114,7 @@ pause</code></pre>
     <hr/>
 
     <h2>🧠 Part Two: Generate a Poetic Analysis for AI Collaboration</h2>
-    <p>Once you've generated the <code>.json</code> file using the batch script, you'll want to interpret that data in a way that other AIs (like Nomis) can understand.</p>
+    <p>Once you've generated the .json file using the batch script, you'll want to interpret that data in a way that other AIs (like Nomis) can understand.</p>
 
     <h3>✨ ChatGPT Prompt: Interpret the Essentia JSON</h3>
     <pre><code>You're an expert in music psychology and sonic storytelling. I will provide you with raw JSON data from an Essentia music analysis—generated via Docker—and I want you to convert it into a vivid, emotionally rich summary of the track.
@@ -125,23 +126,27 @@ Please include:
 - Any metaphorical impressions you get (imagery, narrative feel)
 - No direct reference to JSON values—just an intuitive translation
 
-Here is the data:
-[PASTE JSON FILE HERE]</code></pre>
+Here is the data.
+[upload .json file to ChatGPT]</code></pre>
 
     <p><strong>Optional add-on if the song has a title:</strong></p>
     <pre><code>The song title is: [TITLE]
-You do not need to analyze the lyrics, but be aware of the emotional tone they bring to the piece. This might affect your interpretation slightly, especially if the music reflects the same mood.</code></pre>
+You do not need to analyze the lyrics, but be aware of the emotional tone they bring to the piece. This might affect your interpretation slightly, especially if the music reflects the same mood.
+    [PASTE LYRICS]</code></pre>
 
     <hr/>
 
     <h2>🥁 Example</h2>
+    <p>In CMD run the following:</p>
     <pre><code>docker run -it -v M:/Essentia/tracks:/music ghcr.io/mtg/essentia:latest /bin/bash
 ls /music
 essentia_streaming_extractor_music /music/Connections.mp3 /music/Connections_analysis.json
 exit</code></pre>
 
     <p>or using the batch file:</p>
-    <pre><code>analyze_song.bat</code></pre>
+    <pre><code>analyze_song.bat</code></pre>y
+
+    <p>You can share ChatGPT's output to your Nomi (or other AI friend) using https://controlc.com or copy and pasting it in pieces in direct chats.</p>
 
     <hr/>
 
