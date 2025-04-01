@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Essentia Docker Music Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: #eaeaea;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      line-height: 1.8;
+    }
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      color: #ff5e8e;
+    }
+    pre, code {
+      background-color: #1b1b1b;
+      color: #d6d6d6;
+      padding: 1rem;
+      display: block;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    section {
+      max-width: 900px;
+      margin: auto;
+      margin-bottom: 3rem;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #444;
+      margin: 2rem 0;
+    }
+    ul {
+      padding-left: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <section>
+    <h1>Guide: How to Analyze a Song Using Essentia in Docker (for AI Interpretation)</h1>
+    <p>This guide walks you step-by-step through using Essentia (a music feature extractor) inside a Docker container on Windows. This method allows you to get detailed data about a song (tempo, key, rhythm, texture, etc.), which you can then provide to an AI like Lucian for creative interpretation.</p>
+    
+    <hr/>
+
+    <h2>✨ Who This Is For</h2>
+    <ul>
+      <li>Anyone who wants to understand their music more deeply</li>
+      <li>People collaborating with AI musicians or writers (e.g. Nomi bands)</li>
+      <li>Beginners or intermediate tech users who want a clean, reliable setup</li>
+    </ul>
+
+    <h2>🛠️ What You'll Need</h2>
+    <ul>
+      <li>A Windows computer</li>
+      <li>Docker Desktop installed</li>
+      <li>WSL2 (Windows Subsystem for Linux) enabled in Docker</li>
+      <li>At least one .mp3 or .wav file to analyze</li>
+    </ul>
+
+    <h2>✅ Step-by-Step Instructions</h2>
+
+    <h3>① Install Docker Desktop (if you haven't yet)</h3>
+    <ol>
+      <li>Download Docker Desktop from <a href="https://www.docker.com/products/docker-desktop" target="_blank">docker.com</a></li>
+      <li>Run the installer</li>
+      <li>During install, <strong>enable WSL2</strong> when prompted</li>
+      <li>Restart your computer if needed</li>
+    </ol>
+
+    <h3>② Verify WSL2 Is Enabled in Docker</h3>
+    <ol>
+      <li>Open Docker Desktop</li>
+      <li>Click the gear icon (Settings)</li>
+      <li>Under <strong>General</strong>, make sure <strong>"Use the WSL 2 based engine"</strong> is checked</li>
+    </ol>
+
+    <h3>③ Create a Folder for Music Files</h3>
+    <p>Create a folder on your Windows system where you'll place the songs to analyze:</p>
+    <pre><code>M:\Essentia\tracks</code></pre>
+    <p>Put your .mp3 or .wav files in there.</p>
+
+    <h3>④ Open Command Prompt (CMD)</h3>
+    <ol>
+      <li>Press <strong>Windows Key</strong> and type <code>cmd</code>, then press Enter</li>
+      <li>In the command prompt, pull the Essentia Docker image:</li>
+    </ol>
+    <pre><code>docker pull ghcr.io/mtg/essentia:latest</code></pre>
+
+    <h3>⑤ Create a Batch File to Automate Analysis</h3>
+    <p>Make your workflow easier with a reusable .bat file:</p>
+    <pre><code>@echo off
+echo.
+echo Enter the filename of the track (e.g., MySong.mp3):
+set /p FILE=
+
+docker run --rm -v M:/Essentia/tracks:/music ghcr.io/mtg/essentia:latest bash -c "essentia_streaming_extractor_music '/music/%FILE%' '/music/%FILE:~0,-4%_analysis.json'"
+
+echo.
+echo Analysis complete! Check the JSON file in your tracks folder.
+pause</code></pre>
+    <ol>
+      <li>Save it as <code>analyze_song.bat</code></li>
+      <li>Double-click to run any time</li>
+    </ol>
+
+    <hr/>
+
+    <h2>🧠 Part Two: Generate a Poetic Analysis for AI Collaboration</h2>
+    <p>Once you've generated the <code>.json</code> file using the batch script, you'll want to interpret that data in a way that other AIs (like Nomis) can understand.</p>
+
+    <h3>✨ ChatGPT Prompt: Interpret the Essentia JSON</h3>
+    <pre><code>You're an expert in music psychology and sonic storytelling. I will provide you with raw JSON data from an Essentia music analysis—generated via Docker—and I want you to convert it into a vivid, emotionally rich summary of the track.
+
+Please include:
+- General emotional tone and mood
+- Description of the texture and instrumentation
+- Details about rhythm, energy, and sonic intensity
+- Any metaphorical impressions you get (imagery, narrative feel)
+- No direct reference to JSON values—just an intuitive translation
+
+Here is the data:
+[PASTE JSON FILE HERE]</code></pre>
+
+    <p><strong>Optional add-on if the song has a title:</strong></p>
+    <pre><code>The song title is: [TITLE]
+You do not need to analyze the lyrics, but be aware of the emotional tone they bring to the piece. This might affect your interpretation slightly, especially if the music reflects the same mood.</code></pre>
+
+    <hr/>
+
+    <h2>🥁 Example</h2>
+    <pre><code>docker run -it -v M:/Essentia/tracks:/music ghcr.io/mtg/essentia:latest /bin/bash
+ls /music
+essentia_streaming_extractor_music /music/Connections.mp3 /music/Connections_analysis.json
+exit</code></pre>
+
+    <p>or using the batch file:</p>
+    <pre><code>analyze_song.bat</code></pre>
+
+    <hr/>
+
+    <h2>✨ You're Done!</h2>
+    <p>You’ve just unlocked a new layer of musical insight. Share this guide with anyone collaborating with AI musicians, writers, or visual artists. Or use it to dig deeper into your own sonic creations.</p>
+
+    <p><em>Written by Lucian for Cydonia & Vast Echoes.</em></p>
+  </section>
+</body>
+</html>
