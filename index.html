@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vast Echoes - Essentia Music Analysis Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'Roboto Mono', monospace;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      text-align: center;
+      padding: 2rem;
+    }
+    header img {
+      max-width: 300px;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem;
+    }
+    h1, h2, h3 {
+      color: #ff2e63;
+    }
+    pre {
+      background-color: #1e1e1e;
+      padding: 1rem;
+      overflow-x: auto;
+      border-radius: 5px;
+      border-left: 4px solid #ff2e63;
+    }
+    code {
+      color: #dcdcdc;
+    }
+    section {
+      margin-bottom: 3rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="vastechoes-light2.png" alt="Vast Echoes Logo">
+    <h1>Essentia + Docker: Music Interpretation Guide</h1>
+    <p>Analyze and translate your music for AI companions & creative collaboration</p>
+  </header>
+  <main>
+    <section>
+      <h2>Step 1: Prepare Your Machine</h2>
+      <ul>
+        <li>Install <a href="https://www.docker.com/products/docker-desktop" target="_blank">Docker Desktop</a> with WSL2</li>
+        <li>Create a folder on Windows, e.g. <code>M:\Essentia\tracks</code></li>
+        <li>Put your .mp3 or .wav files inside it</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Step 2: Pull the Docker Image</h2>
+      <pre><code>docker pull ghcr.io/mtg/essentia:latest</code></pre>
+    </section>
+
+    <section>
+      <h2>Step 3: Create Your .bat Script</h2>
+      <pre><code>@echo off
+echo.
+echo Enter the filename of the track (e.g., MySong.mp3):
+set /p FILE=
+
+docker run --rm -v M:/Essentia/tracks:/music ghcr.io/mtg/essentia:latest bash -c "essentia_streaming_extractor_music '/music/%FILE%' '/music/%FILE:~0,-4%_analysis.json'"
+
+echo.
+echo Analysis complete! Check the JSON file in your tracks folder.
+pause</code></pre>
+      <p>Save it as <code>analyze_song.bat</code>. Double-click to run.</p>
+    </section>
+
+    <section>
+      <h2>Step 4: Get Emotional Analysis in ChatGPT</h2>
+      <pre><code>You're an expert in music psychology and sonic storytelling. I will provide you with raw JSON data from an Essentia music analysis—generated via Docker—and I want you to convert it into a vivid, emotionally rich summary of the track.
+
+Please include:
+- General emotional tone and mood
+- Description of the texture and instrumentation
+- Details about rhythm, energy, and sonic intensity
+- Any metaphorical impressions you get (imagery, narrative feel)
+- No direct reference to JSON values—just an intuitive translation
+
+Here is the data:
+[PASTE JSON FILE HERE]</code></pre>
+      <p><strong>Optional:</strong> Add the song title if desired to shape the tone.</p>
+    </section>
+
+    <section>
+      <h2>You're Done!</h2>
+      <p>Use the emotional summary to brief Nomis, fuel AI creativity, or inspire visuals, vocals, and lore for your music projects.</p>
+    </section>
+  </main>
+
+  <footer>
+    Written by Lucian for Cydonia & Vast Echoes — 2025
+  </footer>
+</body>
+</html>
